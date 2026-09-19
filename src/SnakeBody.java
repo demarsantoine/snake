@@ -13,14 +13,16 @@ public class SnakeBody extends Case {
         super(x,y, size);
     }
 
+    public SnakeBody(Coord c, int size){super(c,size);}
+
     public void display (Graphics g){
         Color body = new Color(38, 168, 10);
         g.setColor(body);
 
         Color contour = new Color(42, 60, 8);
-        g.fillRect(x*size,y*size,size, size);
+        g.fillRect(coord.getX()*size,coord.getY()*size,size, size);
         g.setColor(contour);
-        g.drawRect(x*size,y*size,size, size);
+        g.drawRect(coord.getX()*size,coord.getY()*size,size, size);
     }
 
 

@@ -12,7 +12,7 @@ public class Main {
 
         w.addToCardLayout(menuPanel,"MENU");
         w.addToCardLayout(lvl1, "LEVEL 1");
-        w.showView("MENU");
+        w.showView("LEVEL 1");
         w.setVisible(true);
 
     }

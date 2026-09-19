@@ -3,24 +3,36 @@ import java.awt.*;
 
 public class Case extends JPanel {
     protected int size;
-    protected int x;
-    protected int y;
+    Coord coord;
 
     public Case(int x, int y, int size) {
         this.size = size;
-        this.x = x;
-        this.y = y;
+        coord = new Coord(x,y);
     }
 
-    public Case(Dimension d, int size){
+    public Case(Coord c, int size){
         this.size = size;
-        this.x = d.width;
-        this.y = d.height;
+        this.coord = new Coord(c.x,c.y);
     }
 
-    public void updateCoords(int x, int y){
-        this.x = x;
-        this.y = y;
+    public void setCoords(int x, int y){
+        coord.setX(x);
+        coord.setY(y);
+    }
+
+    public void setCoords(Coord c){
+        coord.setX(c.getX());
+        coord.setY(c.getY());
+    }
+
+    public void increaseX (int x){
+        coord.setX(coord.getX()+x);
+    }
+
+    public void increaseY (int y){coord.setY(coord.getY()+y);}
+
+    public Coord getCoords(){
+        return new Coord(coord.getX(),coord.getY());
     }
 
     public void display (Graphics g){}
