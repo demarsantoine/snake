@@ -5,10 +5,11 @@ public class Lvl1 extends Level{
 
     public Lvl1(Window w){
         super(w);
+        number = 1;
         nWidth = 50;
         nHeight = 50;
         caseSize = 10;
-        speed = 200;
+        speed = 100;
 
         this.setSize();
         Color BGColor = new Color(183, 227, 142);
@@ -21,66 +22,22 @@ public class Lvl1 extends Level{
         this.add(scoreLabel);
 
         snake = new Snake(this);
-        mouse = newMouse();
-        this.inputHandler = new InputHandler(snake);
-        this.addKeyListener(this.inputHandler);
+        this.addMouses(1);
+        //mouse = newMouse();
+        //this.inputHandler = new InputHandler(snake);
+        //this.addKeyListener(this.inputHandler);
 
         this.requestFocusInWindow();
 
-        timer = new Timer(speed, e -> {
-            //System.out.println(snake.toString());
-            //System.out.println("Score: "+ score);
-
-            if (snake.updatePosition()) {
-                checkMouse();
-                this.repaint();
-            }
-            else this.lost();
-        });
+        timer = new Timer(speed, e -> {this.update();});
 
 
         timer.start();
     }
 
-    private Mouse newMouse (){
-        Coord c = new Coord(0,0);
-        do {
-            int x = (int) (Math.random() * nWidth);
-            int y = (int) (Math.random() * nHeight);
-            c.setX(x);
-            c.setY(y);
-        } while (snake.isCoordFree(c));
-        return new Mouse(c,caseSize);
-    }
-
-    private void mouseJump(){
-        Coord c = new Coord(0,0);
-        do {
-            int x = (int) (Math.random() * nWidth);
-            int y = (int) (Math.random() * nHeight);
-            c.setX(x);
-            c.setY(y);
-        } while (snake.isCoordFree(c));
-        mouse.setCoords(c);
-    }
-
-    private void checkMouse(){
-        if (snake.headCoords().equals(mouse.getCoords())) {
-            System.out.println("Miam");
-            snake.setAte(true);
-            updateSpeed();
-            mouseJump();
-            score++;
-            scoreLabel.setText("Score: "+ score);
-        }
-    }
-
     private void updateSpeed(){
-        if (speed>5) speed -=5;
+        if (speed>5) speed --;
     }
 
-    private void lost(){
-        System.out.println("Lost");
-        timer.stop();
-    }
+
 }

@@ -4,22 +4,22 @@ public class SnakeHead extends Case{
 
     char direction;
     public SnakeHead(){
-        super(0,0, 0);
+        super(0,0, 0, 0, 0);
 
     }
 
-    public SnakeHead(int x, int y, int size){
-        super(x,y, size);
+    public SnakeHead(int x, int y, int size, int nWidth, int nHeight){
+        super(x,y, size,  nWidth, nHeight);
         direction = 'W';
     }
 
-    public SnakeHead(Coord c, int size){super(c,size);}
+    public SnakeHead(Coord c, int size, int nWidth, int nHeight){super(c,size, nWidth, nHeight);}
 
     public void setDirection(char c){this.direction = c;};
 
     public void display (Graphics g){
-        Color body = new Color(38, 168, 10);
-        Color contour = new Color(42, 60, 8);
+        Color body = new Color(187, 70, 248);
+        Color contour = new Color(50, 21, 67);
         int x1 = 0,x2= 0, x3= 0, y1= 0, y2= 0, y3 = 0;
         if (direction == 'W'){
             x1 = coord.x*size + size;

@@ -4,14 +4,18 @@ import java.awt.*;
 public class Case extends JPanel {
     protected int size;
     Coord coord;
+    private static int nWidth;
+    private static int nHeight;
 
-    public Case(int x, int y, int size) {
+    public Case(int x, int y, int size, int nWidth, int nHeight) {
         this.size = size;
         coord = new Coord(x,y);
     }
 
-    public Case(Coord c, int size){
+    public Case(Coord c, int size, int nWidth, int nHeight) {
         this.size = size;
+        this.nWidth = nWidth;
+        this.nHeight = nHeight;
         this.coord = new Coord(c.x,c.y);
     }
 
@@ -26,10 +30,14 @@ public class Case extends JPanel {
     }
 
     public void increaseX (int x){
-        coord.setX(coord.getX()+x);
+        x += nWidth;
+        if (nWidth > 0) {coord.setX((coord.getX()+x)%nWidth);};
     }
 
-    public void increaseY (int y){coord.setY(coord.getY()+y);}
+    public void increaseY (int y){ if (nHeight> 0){
+        y += nHeight;
+        coord.setY((coord.getY()+y)%nHeight);}
+    }
 
     public Coord getCoords(){
         return new Coord(coord.getX(),coord.getY());

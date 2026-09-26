@@ -28,7 +28,7 @@ public class InputHandler implements KeyListener {
     }
 
     @Override
-    public void keyPressed(KeyEvent e) {
+    public void keyPressed(KeyEvent e)    {
         if (e.getKeyCode() == KeyEvent.VK_LEFT){
             snake.changeDirection('W');
         }

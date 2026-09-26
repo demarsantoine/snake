@@ -1,6 +1,8 @@
 public class Coord {
     int x;
     int y;
+    private static int nWidth;
+    private static int nHeight;
 
     public Coord(int x, int y) {
         this.x = x;

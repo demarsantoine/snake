@@ -2,10 +2,10 @@ import java.awt.*;
 
 public class Mouse extends Case{
 
-    public Mouse(int x, int y, int size){
-        super(x,y,size);
+    public Mouse(int x, int y, int size,  int nWidth, int nHeight) {
+        super(x,y,size, nWidth, nHeight);
     }
-    public Mouse(Coord c, int size){super(c,size);}
+    public Mouse(Coord c, int size, int nWidth, int nHeight){super(c,size, nWidth, nHeight );}
 
     public void display (Graphics g){
         Color body = new Color(184, 67, 67);

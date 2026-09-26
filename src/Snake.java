@@ -17,10 +17,10 @@ public class Snake {
         taleDir = 'E';
         int x =lvl.getNWidth()/2;
         int y =lvl.getNHeight()/2;
-        snake.add(new SnakeHead(x,y,lvl.getCaseSize()));
+        snake.add(new SnakeHead(x,y,lvl.getCaseSize(),lvl.getNWidth(),lvl.getNHeight()));
         ((SnakeHead)snake.getFirst()).setDirection(direction);
-        snake.addLast(new SnakeBody(x+1,y,lvl.getCaseSize()));
-        snake.addLast(new SnakeTale(x+2,y,lvl.getCaseSize()));
+        snake.addLast(new SnakeBody(x+1,y,lvl.getCaseSize(),lvl.getNWidth(),lvl.getNHeight()));
+        snake.addLast(new SnakeTale(x+2,y,lvl.getCaseSize(),lvl.getNWidth(),lvl.getNHeight()));
         ((SnakeTale)snake.getLast()).setDirection(direction);
 
     }
@@ -31,8 +31,8 @@ public class Snake {
         this.ate = false;
         direction = 'W';
         taleDir = 'E';
-        snake.add(new SnakeBody(x,y, lvl.getCaseSize()));
-        snake.add(new SnakeBody(x+1,y,lvl.getCaseSize()));
+        snake.add(new SnakeBody(x,y, lvl.getCaseSize(),lvl.getNWidth(),lvl.getNHeight()));
+        snake.add(new SnakeBody(x+1,y,lvl.getCaseSize(),lvl.getNWidth(),lvl.getNHeight()));
     }
 
     public Coord headCoords(){
@@ -53,11 +53,11 @@ public class Snake {
         ate = a;
     };
 
-    public boolean updatePosition(){
+    /*public boolean updatePosition(){
         Case tale = snake.getLast();
         if(ate) {
             snake.removeLast();
-            snake.addLast(new SnakeBody(tale.getCoords(),lvl.getCaseSize()));
+            snake.addLast(new SnakeBody(tale.getCoords(),lvl.getCaseSize(),lvl.getNWidth(),lvl.getNHeight()));
             snake.addLast(tale);
             ate = false;
         }
@@ -86,6 +86,46 @@ public class Snake {
         }
         else if (direction == 'S'){
             int y = (snake.getFirst().getCoords().getY()>= lvl.getNHeight()-1)? -(lvl.getNHeight()-1) : 1;
+            snake.getFirst().increaseY(y);
+            ((SnakeHead)snake.getFirst()).setDirection(direction);
+            taleDir = 'N';
+        }
+        return !this.selfBitten();
+    };*/
+
+    public boolean updatePosition(){
+        Case tale = snake.getLast();
+        if(ate) {
+            snake.removeLast();
+            snake.addLast(new SnakeBody(tale.getCoords(),lvl.getCaseSize(),lvl.getNWidth(),lvl.getNHeight()));
+            snake.addLast(tale);
+            ate = false;
+        }
+        for (int i = snake.size() - 1; i > 0; i--) {
+            Coord newC = snake.get(i-1).getCoords();
+            snake.get(i).setCoords(newC);
+        }
+        if (direction == taleDir){direction = Snake.opposite(taleDir);}
+        if (direction == 'W'){
+            int x = -1;
+            snake.getFirst().increaseX(x);
+            ((SnakeHead)snake.getFirst()).setDirection(direction);
+            taleDir = 'E';
+        }
+        if (direction == 'E'){
+            int x = 1;
+            snake.getFirst().increaseX(x);
+            ((SnakeHead)snake.getFirst()).setDirection(direction);
+            taleDir = 'W';
+        }
+        if (direction == 'N'){
+            int y = -1;
+            snake.getFirst().increaseY(y);
+            ((SnakeHead)snake.getFirst()).setDirection(direction);
+            taleDir = 'S';
+        }
+        else if (direction == 'S'){
+            int y = 1;
             snake.getFirst().increaseY(y);
             ((SnakeHead)snake.getFirst()).setDirection(direction);
             taleDir = 'N';
