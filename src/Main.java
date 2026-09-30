@@ -6,6 +6,7 @@ import java.util.List;
 public class Main {
     private static int width = 1280;
     private static int height = 720;
+    private static int nLevel = 3;
     public static void main(String[] args) {
         //Créer la fenêtre
         Window w = new Window(width, height);
@@ -14,9 +15,15 @@ public class Main {
         List<Level> levels = new ArrayList<>();
         levels.add(new Lvl1(w));
         levels.add(new Lvl2(w));
+        //-------------------------------------
+        List<LevelItem> levelsList = new ArrayList<>();
+        for (int i = 1; i <= nLevel; i++) {
+           levelsList.add(new LevelItem(i));
+        }
+
 
         //Créer le menu
-        MenuPanel menuPanel = new MenuPanel(w, levels);
+        MenuPanel menuPanel = new MenuPanel(w, levelsList);
 
         //Ajouter les niveaux et le menu au cardpanel
         w.addToCardLayout(menuPanel,"MENU");

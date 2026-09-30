@@ -6,10 +6,10 @@ public class Lvl1 extends Level{
     public Lvl1(Window w){
         super(w);
         number = 1;
-        nWidth = 50;
-        nHeight = 50;
-        caseSize = 10;
-        speed = 100;
+        nWidth = 20;
+        nHeight = 20;
+        caseSize = 50;
+        speed = 200;
 
         this.setSize();
         Color BGColor = new Color(183, 227, 142);

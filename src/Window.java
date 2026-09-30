@@ -5,7 +5,7 @@ import java.util.List;
 public class Window extends JFrame {
     private static CardLayout cardLayout;
     private static JPanel mainContainer;
-    private static List<Level> levels;
+    private static Level currentLevel;
 
     public Window(int width, int height) {
         super("Snake Aventure");
@@ -35,11 +35,25 @@ public class Window extends JFrame {
         }
     }
 
-    public void addLevels(List<Level> levels){
-        this.levels = levels;
-    }
-
     public void showView(int level) {
+
+        if (currentLevel != null) {
+            currentLevel.destroy();
+            mainContainer.remove(currentLevel);
+        }
+        switch (level) {
+            case 1 :
+                currentLevel = new Lvl1(this);
+                break;
+            case 2 :
+                currentLevel = new Lvl2(this);
+                break;
+            case 3 :
+                currentLevel = new Lvl3(this);
+                break;
+            default : currentLevel = null;
+        }
+        mainContainer.add(currentLevel, "Level "+level);
         showView("Level " + level);
     }
     public void addToCardLayout(JPanel panel, String viewName) {

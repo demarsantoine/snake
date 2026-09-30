@@ -18,6 +18,7 @@ public abstract class Level extends JPanel {
     //protected InputHandler inputHandler;
     protected JLabel scoreLabel;
     protected Timer timer;
+    Image backgroundImage;
 
     int nWidth;
     int nHeight;
@@ -30,6 +31,13 @@ public abstract class Level extends JPanel {
         this.setFocusable(true);
         mainContainer = new JPanel();
         mouses = new LinkedList<>();
+        java.net.URL imageUrl = getClass().getResource("/Grass.jpg");
+
+        if (imageUrl != null) {
+            backgroundImage = new ImageIcon(imageUrl).getImage();
+        } else {
+            System.err.println("Erreur : L'image Grass.jpg est introuvable au chemin spécifié.");
+        }
 
         //Récupérer l'inputmap et actionmap du panneau
         InputMap inputMap = this.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
@@ -130,13 +138,14 @@ public abstract class Level extends JPanel {
         mouse.setCoords(c);
     }
     protected void update(){
-        if (snake.updatePosition()) {
+        snake.updatePosition();
+        if (this.loseCondition()) this.lost();
+        else {
             this.checkMouses();
             this.updateMouses();
             this.repaint();
             if(this.winCondition())this.won();
         }
-        else this.lost();
     }
     protected void addMouses(int n){
         for (int i = 0; i<n;i++){
@@ -150,7 +159,7 @@ public abstract class Level extends JPanel {
             int y = (int) (Math.random() * nHeight);
             c.setX(x);
             c.setY(y);
-        } while (isCoordFree(c));
+        } while (!isCoordFree(c));
         return new Mouse(c,caseSize, nWidth,nHeight);
     }
     protected void won(){
@@ -161,13 +170,17 @@ public abstract class Level extends JPanel {
         System.out.println("You Lose !!");
         timer.stop();
     }
+    protected boolean loseCondition(){
+        return snake.selfBitten();
+    }
     protected boolean winCondition(){
         return score >=10;
     }
     protected boolean isCoordFree(Coord c){
         boolean free = snake.isCoordFree(c);
         for (Mouse m : mouses){
-            if (m.getCoords().equals(c)) free = false;
+            //System.out.println("Compare" + m.getCoords() + " and " + c + " : " + !m.getCoords().equals(c));
+            if (m.getCoords().equals(c)){ free = false;};
         }
         return free;
     }
@@ -178,6 +191,10 @@ public abstract class Level extends JPanel {
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
+        int width = nWidth*caseSize;
+        int height = nHeight*caseSize;
+        g.drawImage(backgroundImage, 0, 0, width, height, this);
+
         for (Mouse m : mouses){
             m.display(g);
         }
@@ -196,7 +213,10 @@ public abstract class Level extends JPanel {
         return "LEVEL "+number;
     }
 
-    protected Dimension coordonnes(int x, int y){
-        return new Dimension(x*caseSize,y*caseSize);
+    public void destroy(){
+        mouses.clear();
+        if (timer != null) {
+            timer.stop();
+        }
     }
 }

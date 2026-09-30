@@ -1,5 +1,6 @@
 import javax.swing.*;
 import java.awt.*;
+import java.util.LinkedList;
 
 public class Lvl2 extends Level{
 
@@ -8,9 +9,9 @@ public class Lvl2 extends Level{
     public Lvl2(Window w){
         super(w);
         number= 2;
-        nWidth = 50;
-        nHeight = 50;
-        caseSize = 10;
+        nWidth = 30;
+        nHeight = 30;
+        caseSize = 30;
         speed = 100;
         mouseCounter = 0;
 
@@ -47,10 +48,12 @@ public class Lvl2 extends Level{
             int move = (((int)(Math.random()*2))==1)? 1 : -1 ;
             int axis = (((int)(Math.random()*2))==1)? 1 : -1 ;
             if (axis == 1){
-                mouse.increaseX(move%nWidth);
+                mouseCoord.setX((mouseCoord.getX()+move+nWidth)%nWidth);
             }
-            else mouse.increaseY(move%nHeight);
-
+            else mouseCoord.setY((mouseCoord.getY()+move+nHeight)%nHeight);
+            if (isCoordFree(mouseCoord)){
+                mouse.setCoords(mouseCoord);
+            }
         }
 
     }
@@ -61,12 +64,25 @@ public class Lvl2 extends Level{
         mouseCounter %= 3;
         if(mouseCounter == 0) {
             for (Mouse m : this.mouses) {
-                Coord mouseCoord = new Coord(m.getX(), m.getY());
+                Coord mouseCoord = m.getCoords();
+                //System.out.println("mouseCoord :" +mouseCoord);
                 int move = (((int) (Math.random() * 2)) == 1) ? 1 : -1;
-                int axis = (((int) (Math.random() * 2)) == 1) ? 1 : -1;
-                if (axis == 1) {
-                    m.increaseX(move % nWidth);
-                } else m.increaseY(move % nHeight);
+                char dir = 'W';
+                if (((int) (Math.random() * 2)) == 1) {
+                    mouseCoord.setX((mouseCoord.getX()+move+nWidth)%nWidth);
+                    if (move == 1 ) dir ='E';
+                }
+                else {
+                    mouseCoord.setY((mouseCoord.getY() + move + nHeight) % nHeight);
+                    if (move == 1 ) dir = 'S';
+                    else dir = 'N';
+                }
+                m.setDirection(dir);
+                //System.out.println("new mouseCoord :" + mouseCoord);
+                if (this.isCoordFree(mouseCoord)){
+                    m.setCoords(mouseCoord);
+
+                }
             }
         }
     }

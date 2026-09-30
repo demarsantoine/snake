@@ -3,7 +3,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Snake {
-    private List<Case> snake;
+    private List<MovingCase> snake;
     private char direction;
     private char taleDir;
     private Level lvl;
@@ -12,7 +12,7 @@ public class Snake {
     public Snake(Level lvl){
         this.lvl = lvl;
         this.ate = false;
-        snake = new ArrayList<Case>();
+        snake = new ArrayList<MovingCase>();
         direction = 'W';
         taleDir = 'E';
         int x =lvl.getNWidth()/2;
@@ -20,14 +20,14 @@ public class Snake {
         snake.add(new SnakeHead(x,y,lvl.getCaseSize(),lvl.getNWidth(),lvl.getNHeight()));
         ((SnakeHead)snake.getFirst()).setDirection(direction);
         snake.addLast(new SnakeBody(x+1,y,lvl.getCaseSize(),lvl.getNWidth(),lvl.getNHeight()));
-        snake.addLast(new SnakeTale(x+2,y,lvl.getCaseSize(),lvl.getNWidth(),lvl.getNHeight()));
-        ((SnakeTale)snake.getLast()).setDirection(direction);
+        snake.addLast(new SnakeTail(x+2,y,lvl.getCaseSize(),lvl.getNWidth(),lvl.getNHeight()));
+        ((SnakeTail)snake.getLast()).setDirection(direction);
 
     }
 
     public Snake(int x, int y, Level lvl){
 
-        snake = new ArrayList<Case>();
+        snake = new ArrayList<MovingCase>();
         this.ate = false;
         direction = 'W';
         taleDir = 'E';
@@ -93,16 +93,19 @@ public class Snake {
         return !this.selfBitten();
     };*/
 
-    public boolean updatePosition(){
-        Case tale = snake.getLast();
+    public void updatePosition(){
+        MovingCase tail = snake.getLast();
         if(ate) {
             snake.removeLast();
-            snake.addLast(new SnakeBody(tale.getCoords(),lvl.getCaseSize(),lvl.getNWidth(),lvl.getNHeight()));
-            snake.addLast(tale);
+            snake.addLast(new SnakeBody(tail.getCoords(),lvl.getCaseSize(),lvl.getNWidth(),lvl.getNHeight()));
+            snake.addLast(tail);
             ate = false;
         }
         for (int i = snake.size() - 1; i > 0; i--) {
             Coord newC = snake.get(i-1).getCoords();
+            if (i == snake.size() - 1) { SnakeTail sT =  (SnakeTail)snake.get(i);}
+            char newDirection = snake.get(i-1).getDirection();
+            snake.get(i).setDirection(newDirection);
             snake.get(i).setCoords(newC);
         }
         if (direction == taleDir){direction = Snake.opposite(taleDir);}
@@ -130,7 +133,7 @@ public class Snake {
             ((SnakeHead)snake.getFirst()).setDirection(direction);
             taleDir = 'N';
         }
-        return !this.selfBitten();
+        //return !this.selfBitten();
     };
 
     public static char opposite(char c){
@@ -144,7 +147,7 @@ public class Snake {
     public boolean isCoordFree(Coord c){
         boolean free = true;
         for (int i = snake.size() - 1; i > 0; i--) {
-            free = c.equals(snake.get(i).getCoords());
+            if (c.equals(snake.get(i).getCoords())) free = false;
         }
         return free;
     }
