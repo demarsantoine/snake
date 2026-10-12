@@ -51,6 +51,9 @@ public class Window extends JFrame {
             case 3 :
                 currentLevel = new Lvl3(this);
                 break;
+            case 4 :
+                currentLevel = new Lvl4(this);
+                break;
             default : currentLevel = null;
         }
         mainContainer.add(currentLevel, "Level "+level);

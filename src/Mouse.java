@@ -3,6 +3,9 @@ import java.awt.*;
 
 public class Mouse extends MovingCase{
 
+    int count;
+    boolean alerted;
+
     public Mouse(int x, int y, int size,  int nWidth, int nHeight) {
         super(x,y,size, nWidth, nHeight);
         java.net.URL imageUrl = getClass().getResource("/Mouse.png");
@@ -13,6 +16,8 @@ public class Mouse extends MovingCase{
             System.err.println("Erreur : L'image Mouse.png est introuvable au chemin spécifié.");
         }
         direction = 'E';
+        count = 0;
+        alerted = false;
     }
     public Mouse(Coord c, int size, int nWidth, int nHeight){
         super(c,size, nWidth, nHeight );
@@ -24,6 +29,8 @@ public class Mouse extends MovingCase{
             System.err.println("Erreur : L'image Mouse.png est introuvable au chemin spécifié.");
         }
         direction = 'E';
+        count = 0;
+        alerted = false;
     }
 
     /*public void display (Graphics g){
@@ -35,6 +42,50 @@ public class Mouse extends MovingCase{
         g.setColor(contour);
         g.drawRect(coord.getX()*size,coord.getY()*size,size, size);
     }*/
+
+    public boolean isInSight (Coord c){
+        int mX = this.coord.getX();
+        int mY = this.coord.getY();
+
+        int X = c.getX();
+        int Y = c.getY();
+
+        boolean inSight = false;
+
+        switch(direction){
+            case 'N' :
+                for (int x = mX-2; x <= mX+2; x++ ){
+                    for (int y = mY-5; y <= mY; y++ ){}
+                }
+            case 'S':
+            case 'E' :
+            case 'W' :
+        }
+
+
+        return true;
+    }
+
+    public void update (){
+        count += 1;
+        count %= (alerted)? 2:4;
+    }
+
+    public int getCount() {
+        return count;
+    }
+
+    public void setCount(int count) {
+        this.count = count;
+    }
+
+    public boolean isAlerted() {
+        return alerted;
+    }
+
+    public void setAlerted(boolean alerted) {
+        this.alerted = alerted;
+    }
 
     @Override
     protected void paintComponent(Graphics g){

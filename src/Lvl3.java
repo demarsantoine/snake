@@ -6,14 +6,16 @@ public class Lvl3 extends Lvl2{
     public Lvl3(Window w){
         walls = new ArrayList<>();
         super(w);
+        this.number= 3;
         this.setWalls();
     }
 
-    private void setWalls(){
+    protected void setWalls(){
         for (int i = 0; i<nHeight ; i++){
             walls.add(new Wall((int)nWidth/2, i, caseSize, nWidth, nHeight));
         }
     }
+
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
@@ -35,12 +37,14 @@ public class Lvl3 extends Lvl2{
 
     @Override
     protected boolean loseCondition(){
-        if (!super.loseCondition()) {
-            Coord hc = snake.headCoords();
-            for (Wall w : walls) {
-                if (w.getCoords().equals(hc)) {
-                    return true;
-                }
+        return super.loseCondition() || hitWall();
+    }
+
+    protected boolean hitWall(){
+        Coord hc = snake.headCoords();
+        for (Wall w : walls) {
+            if (w.getCoords().equals(hc)) {
+                return true;
             }
         }
         return false;

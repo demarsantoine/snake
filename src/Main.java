@@ -6,7 +6,7 @@ import java.util.List;
 public class Main {
     private static int width = 1280;
     private static int height = 720;
-    private static int nLevel = 3;
+    private static int nLevel = 4;
     public static void main(String[] args) {
         //Créer la fenêtre
         Window w = new Window(width, height);

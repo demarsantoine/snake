@@ -1,8 +1,6 @@
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
-import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.LinkedList;
 
 public abstract class Level extends JPanel {
@@ -15,10 +13,11 @@ public abstract class Level extends JPanel {
     protected Image background;
     protected JLabel scorePanel;
     protected JPanel mainContainer;
+    protected Window w;
     //protected InputHandler inputHandler;
     protected JLabel scoreLabel;
     protected Timer timer;
-    Image backgroundImage;
+    protected Image backgroundImage;
 
     int nWidth;
     int nHeight;
@@ -29,6 +28,7 @@ public abstract class Level extends JPanel {
     public Level(Window w) {
         super();
         this.setFocusable(true);
+        this.w = w;
         mainContainer = new JPanel();
         mouses = new LinkedList<>();
         java.net.URL imageUrl = getClass().getResource("/Grass.jpg");
@@ -165,10 +165,13 @@ public abstract class Level extends JPanel {
     protected void won(){
         System.out.println("You win !!");
         timer.stop();
+
+        this.showEndScreen(true);
     }
     protected void lost(){
         System.out.println("You Lose !!");
         timer.stop();
+        this.showEndScreen(false);
     }
     protected boolean loseCondition(){
         return snake.selfBitten();
@@ -185,8 +188,24 @@ public abstract class Level extends JPanel {
         return free;
     }
 
-    protected void updateMouse(){};
+    protected void updateMouse(Mouse m){};
     protected void updateMouses(){}
+
+    private void showEndScreen(boolean won) {
+        // S'assurer que le niveau utilise un layout qui permet de superposer (ex: BorderLayout)
+        this.setLayout(new BorderLayout());
+
+        EndPanel endPanel = new EndPanel(w,number, won);
+
+        this.add(endPanel, BorderLayout.CENTER);
+
+        // Indispensable en Swing pour dire au conteneur de prendre en compte le nouveau composant
+        this.revalidate();
+        this.repaint();
+
+        // Ne pas oublier de donner le focus au panneau de fin pour que les boutons réagissent bien si besoin
+        endPanel.requestFocusInWindow();
+    }
 
     @Override
     protected void paintComponent(Graphics g) {

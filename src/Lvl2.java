@@ -8,7 +8,7 @@ public class Lvl2 extends Level{
 
     public Lvl2(Window w){
         super(w);
-        number= 2;
+        this.number= 2;
         nWidth = 30;
         nHeight = 30;
         caseSize = 30;
@@ -40,20 +40,25 @@ public class Lvl2 extends Level{
     }
 
     @Override
-    protected void updateMouse(){
-        Coord mouseCoord = new Coord(mouse.getX(), mouse.getY());
-        mouseCounter++;
-        mouseCounter %= 3;
-        if(mouseCounter == 0){
-            int move = (((int)(Math.random()*2))==1)? 1 : -1 ;
-            int axis = (((int)(Math.random()*2))==1)? 1 : -1 ;
-            if (axis == 1){
-                mouseCoord.setX((mouseCoord.getX()+move+nWidth)%nWidth);
-            }
-            else mouseCoord.setY((mouseCoord.getY()+move+nHeight)%nHeight);
-            if (isCoordFree(mouseCoord)){
-                mouse.setCoords(mouseCoord);
-            }
+    protected void updateMouse(Mouse m){
+        Coord mouseCoord = m.getCoords();
+        //System.out.println("mouseCoord :" +mouseCoord);
+        int move = (((int) (Math.random() * 2)) == 1) ? 1 : -1;
+        char dir = 'W';
+        if (((int) (Math.random() * 2)) == 1) {
+            mouseCoord.setX((mouseCoord.getX()+move+nWidth)%nWidth);
+            if (move == 1 ) dir ='E';
+        }
+        else {
+            mouseCoord.setY((mouseCoord.getY() + move + nHeight) % nHeight);
+            if (move == 1 ) dir = 'S';
+            else dir = 'N';
+        }
+        m.setDirection(dir);
+        //System.out.println("new mouseCoord :" + mouseCoord);
+        if (this.isCoordFree(mouseCoord)){
+            m.setCoords(mouseCoord);
+
         }
 
     }
@@ -61,28 +66,10 @@ public class Lvl2 extends Level{
     @Override
     protected void updateMouses(){
         mouseCounter++;
-        mouseCounter %= 3;
+        mouseCounter %= 2;
         if(mouseCounter == 0) {
             for (Mouse m : this.mouses) {
-                Coord mouseCoord = m.getCoords();
-                //System.out.println("mouseCoord :" +mouseCoord);
-                int move = (((int) (Math.random() * 2)) == 1) ? 1 : -1;
-                char dir = 'W';
-                if (((int) (Math.random() * 2)) == 1) {
-                    mouseCoord.setX((mouseCoord.getX()+move+nWidth)%nWidth);
-                    if (move == 1 ) dir ='E';
-                }
-                else {
-                    mouseCoord.setY((mouseCoord.getY() + move + nHeight) % nHeight);
-                    if (move == 1 ) dir = 'S';
-                    else dir = 'N';
-                }
-                m.setDirection(dir);
-                //System.out.println("new mouseCoord :" + mouseCoord);
-                if (this.isCoordFree(mouseCoord)){
-                    m.setCoords(mouseCoord);
-
-                }
+                this.updateMouse(m);
             }
         }
     }
