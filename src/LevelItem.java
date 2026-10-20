@@ -10,6 +10,7 @@ public class LevelItem {
 
     @Override
     public String toString(){
+        if (number == 0) return "Test Level";
         return "Level " + number;
     }
 }

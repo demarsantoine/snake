@@ -93,7 +93,6 @@ public abstract class Level extends JPanel {
             if (snake.headCoords().equals(m.getCoords())) {
                 System.out.println("Miam !");
                 snake.setAte(true);
-                //iterator.remove();
                 eatenMouse = m;
                 score++;
                 scoreLabel.setText("Score: " + score);
@@ -142,9 +141,9 @@ public abstract class Level extends JPanel {
         if (this.loseCondition()) this.lost();
         else {
             this.checkMouses();
+            if(this.winCondition())this.won();
             this.updateMouses();
             this.repaint();
-            if(this.winCondition())this.won();
         }
     }
     protected void addMouses(int n){

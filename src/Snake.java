@@ -146,7 +146,7 @@ public class Snake {
 
     public boolean isCoordFree(Coord c){
         boolean free = true;
-        for (int i = snake.size() - 1; i > 0; i--) {
+        for (int i = snake.size() - 1; i >= 0; i--) {
             if (c.equals(snake.get(i).getCoords())) free = false;
         }
         return free;

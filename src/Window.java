@@ -42,6 +42,9 @@ public class Window extends JFrame {
             mainContainer.remove(currentLevel);
         }
         switch (level) {
+            case 0 :
+                currentLevel = new TestAStar(this);
+                break;
             case 1 :
                 currentLevel = new Lvl1(this);
                 break;

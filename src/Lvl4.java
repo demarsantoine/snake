@@ -34,18 +34,31 @@ public class Lvl4 extends Lvl3{
         int my = mouseCoord.getY();
         if (m.isInSight(headCoord)) {
             char dir = 'O';
-            if (mx - my >= sx - sy && mx + my < sx + sy) {
+
+            if (mx - my >= sx - sy && mx + my < sx + sy) { //Si la mouse est au-dessus du snake
                 dir = 'N';
                 mouseCoord = new Coord(mx, my - 1);
-            } else if (mx - my <= sx - sy && mx + my < sx + sy) {
+                if (!this.isCoordFree(mouseCoord)){
+                    mouseCoord = (sx <= mx && my > 1)? new Coord(mx+1, my) : new Coord(mx-1, my);
+                }
+            } else if (mx - my <= sx - sy && mx + my < sx + sy) { //Si la mouse est à gauche du snake
                 dir = 'W';
                 mouseCoord = new Coord(mx - 1, my);
-            } else if (mx - my > sx - sy && mx + my > sx + sy) {
+                if (!this.isCoordFree(mouseCoord)){ //si elle est bloquée par un mur (à peaufiner !!!!!) *********************************************
+                    mouseCoord = (sy <= my && mx > 1)? new Coord(mx, my+1) : new Coord(mx, my-1);
+                }
+            } else if (mx - my > sx - sy && mx + my > sx + sy) {//Si la mouse est à droite du snake
                 dir = 'E';
                 mouseCoord = new Coord(mx + 1, my);
-            } else if (mx - my < sx - sy && mx + my > sx + sy) {
+                if (!this.isCoordFree(mouseCoord)){
+                    mouseCoord = (sy <= my && mx<nWidth-2 )? new Coord(mx, my+1) : new Coord(mx, my-1);
+                }
+            } else if (mx - my < sx - sy && mx + my > sx + sy) { //Si la mouse est sous le snake
                 dir = 'S';
                 mouseCoord = new Coord(mx, my + 1);
+                if (!this.isCoordFree(mouseCoord)){
+                    mouseCoord = (sx <= mx && my<nHeight-2)? new Coord(mx+1, my) : new Coord(mx-1, my);
+                }
             }
             m.setDirection(dir);
             //System.out.println("new mouseCoord :" + mouseCoord);
